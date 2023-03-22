@@ -7,40 +7,41 @@ int extraMemoryAllocated;
 
 
 void merge(int pData[], int l, int m, int r) {
-    int i, j, k;
-    int n1 = m - l + 1;
-    int n2 = r - m;
+    int i, j, k, one, two;
+    one = m - l + 1;
+    two = r - m;
+    
+	int* left = (int*)malloc(one * sizeof(int));
+	int* right = (int*)malloc(one * sizeof(int));
+	extraMemoryAllocated += one * sizeof(int) + two * sizeof(int);
+
+    for (i = 0; i < one; i++)
+        left[i] = pData[l + i];
+    for (j = 0; j < two; j++)
+        right[j] = pData[m + 1 + j];
  
-    int L[n1], R[n2];
- 
-    for (i = 0; i < n1; i++)
-        L[i] = pData[l + i];
-    for (j = 0; j < n2; j++)
-        R[j] = pData[m + 1 + j];
- 
-    i = 0;
-    j = 0;
-    k = l;
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            pData[k] = L[i];
+    i = 0, j = 0, k = l;
+   
+    while (i < one && j < two) {
+        if (left[i] <= right[j]) {
+            pData[k] = left[i];
             i++;
         }
         else {
-            pData[k] = R[j];
+            pData[k] = right[j];
             j++;
         }
         k++;
     }
  
-    while (i < n1) {
-        pData[k] = L[i];
+    while (i < one) {
+        pData[k] = left[i];
         i++;
         k++;
     }
  
-    while (j < n2) {
-        pData[k] = R[j];
+    while (j < two) {
+        pData[k] = right[j];
         j++;
         k++;
     }
